@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-public class SunshineMainActivity extends AppCompatActivity {
+public class ForecastListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sunshine_main);
+        setContentView(R.layout.activity_forecast_list);
     }
 
     @Override

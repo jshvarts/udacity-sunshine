@@ -13,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +34,8 @@ import java.util.Arrays;
 /**
  * Created by shvartsy on 12/1/15.
  */
-public class ForecastFragment extends Fragment {
-    private static final String TAG = ForecastFragment.class.getSimpleName();
+public class ForecastListFragment extends Fragment {
+    private static final String TAG = ForecastListFragment.class.getSimpleName();
 
     private ArrayAdapter<String> forecastAdapter;
 
@@ -41,13 +43,24 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_forecast, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_list_forecast, container, false);
 
         forecastAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_forecast, R.id.list_item_forecast_textview);
 
         forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast_listview);
+        forecastListView.setAdapter(forecastAdapter);
 
+        forecastListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String forecast = forecastAdapter.getItem(position);
+                if (forecast != null) {
+                    Toast toast = Toast.makeText(getActivity(), "click on " + forecast, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
         setHasOptionsMenu(true);
 
         return rootView;
@@ -296,9 +309,6 @@ public class ForecastFragment extends Fragment {
                 } else {
                     forecastAdapter.addAll(Arrays.asList(weatherData));
                 }
-            }
-            if (forecastListView != null) {
-                forecastListView.setAdapter(forecastAdapter);
             }
         }
     }
