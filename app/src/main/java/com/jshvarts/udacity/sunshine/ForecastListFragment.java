@@ -1,9 +1,11 @@
 package com.jshvarts.udacity.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.text.format.Time;
@@ -30,6 +32,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -47,7 +50,7 @@ public class ForecastListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_forecast_list, container, false);
 
         forecastAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.list_item_forecast, R.id.list_item_forecast_textview);
+                R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
 
         forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast_listview);
         forecastListView.setAdapter(forecastAdapter);
@@ -57,8 +60,8 @@ public class ForecastListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String forecast = forecastAdapter.getItem(position);
                 if (forecast != null) {
-                    Toast toast = Toast.makeText(getActivity(), "click on " + forecast, Toast.LENGTH_SHORT);
-                    toast.show();
+                    //Toast toast = Toast.makeText(getActivity(), "click on " + forecast, Toast.LENGTH_SHORT);
+                    //toast.show();
                     Intent detailIntent = new Intent(getActivity(), ForecastDetailActivity.class);
                     detailIntent.putExtra(ForecastDetailActivity.EXTRA_DETAIL, forecast);
                     startActivity(detailIntent);
@@ -72,6 +75,12 @@ public class ForecastListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        fetchWeather();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         fetchWeather();
     }
 
@@ -95,7 +104,11 @@ public class ForecastListFragment extends Fragment {
     }
 
     private void fetchWeather() {
-        String postcode = "11229";
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        String postcode = settings.getString(
+                getContext().getString(R.string.pref_location_key),
+                getContext().getString(R.string.pref_location_default));
         new FetchWeatherTask().execute(postcode);
     }
 
