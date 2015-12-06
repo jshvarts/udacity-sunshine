@@ -32,6 +32,7 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         // TODO revisit deprecated findPreference
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
     }
 
     @Override

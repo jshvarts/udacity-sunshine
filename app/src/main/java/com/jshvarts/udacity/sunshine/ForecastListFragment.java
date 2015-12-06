@@ -106,10 +106,10 @@ public class ForecastListFragment extends Fragment {
     private void fetchWeather() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        String postcode = settings.getString(
+        String location = settings.getString(
                 getContext().getString(R.string.pref_location_key),
                 getContext().getString(R.string.pref_location_default));
-        new FetchWeatherTask().execute(postcode);
+        new FetchWeatherTask().execute(location);
     }
 
     class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
@@ -214,8 +214,8 @@ public class ForecastListFragment extends Fragment {
 
         @Override
         protected String[] doInBackground(String... params) {
-            String postcode = params[0];
-            if (TextUtils.isEmpty(postcode)) {
+            String location = params[0];
+            if (TextUtils.isEmpty(location)) {
                 Log.e(TAG, "postcode passed to AsyncTask is empty or null");
                 return null;
             }
@@ -227,14 +227,18 @@ public class ForecastListFragment extends Fragment {
             final String FORMAT_PARAM = "mode";
             final String FORMAT_PARAM_VALUE = "json";
             final String UNITS_PARAM = "units";
-            final String UNITS_PARAM_VALUE = "metric";
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "APPID";
 
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String units = settings.getString(
+                    getContext().getString(R.string.pref_units_key),
+                    getContext().getString(R.string.pref_units_metric));
+
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendQueryParameter(QUERY_PARAM, postcode)
+                    .appendQueryParameter(QUERY_PARAM, location)
                     .appendQueryParameter(FORMAT_PARAM, FORMAT_PARAM_VALUE)
-                    .appendQueryParameter(UNITS_PARAM, UNITS_PARAM_VALUE)
+                    .appendQueryParameter(UNITS_PARAM, units)
                     .appendQueryParameter(DAYS_PARAM, String.valueOf(numDays))
                     .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
                     .build();
