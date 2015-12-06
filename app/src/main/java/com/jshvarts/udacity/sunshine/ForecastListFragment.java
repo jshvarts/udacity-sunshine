@@ -1,5 +1,6 @@
 package com.jshvarts.udacity.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,7 +44,7 @@ public class ForecastListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list_forecast, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_forecast_list, container, false);
 
         forecastAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_forecast, R.id.list_item_forecast_textview);
@@ -58,6 +59,9 @@ public class ForecastListFragment extends Fragment {
                 if (forecast != null) {
                     Toast toast = Toast.makeText(getActivity(), "click on " + forecast, Toast.LENGTH_SHORT);
                     toast.show();
+                    Intent detailIntent = new Intent(getActivity(), ForecastDetailActivity.class);
+                    detailIntent.putExtra(ForecastDetailActivity.EXTRA_DETAIL, forecast);
+                    startActivity(detailIntent);
                 }
             }
         });
