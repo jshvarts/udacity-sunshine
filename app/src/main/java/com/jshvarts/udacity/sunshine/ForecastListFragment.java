@@ -217,14 +217,13 @@ public class ForecastListFragment extends Fragment {
             final String UNITS_PARAM_VALUE = "metric";
             final String DAYS_PARAM = "cnt";
             final String APPID_PARAM = "APPID";
-            final String APPID_PARAM_VALUE = "289ce7913694cddaa132646697638795";
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, postcode)
                     .appendQueryParameter(FORMAT_PARAM, FORMAT_PARAM_VALUE)
                     .appendQueryParameter(UNITS_PARAM, UNITS_PARAM_VALUE)
                     .appendQueryParameter(DAYS_PARAM, String.valueOf(numDays))
-                    .appendQueryParameter(APPID_PARAM, APPID_PARAM_VALUE)
+                    .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
                     .build();
 
             // These two need to be declared outside the try/catch
