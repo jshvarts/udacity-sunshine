@@ -43,6 +43,9 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_forecast, container, false);
 
+        forecastAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.list_item_forecast, R.id.list_item_forecast_textview);
+
         forecastListView = (ListView) rootView.findViewById(R.id.listview_forecast_listview);
 
         setHasOptionsMenu(true);
@@ -284,9 +287,16 @@ public class ForecastFragment extends Fragment {
                 return;
             }
 
-            forecastAdapter = new ArrayAdapter<>(getActivity(),
-                    R.layout.list_item_forecast, R.id.list_item_forecast_textview, Arrays.asList(weatherData));
-
+            if (forecastAdapter != null) {
+                forecastAdapter.clear();
+                if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+                    for (int i = 0; i < weatherData.length; i++) {
+                        forecastAdapter.add(weatherData[i]);
+                    }
+                } else {
+                    forecastAdapter.addAll(Arrays.asList(weatherData));
+                }
+            }
             if (forecastListView != null) {
                 forecastListView.setAdapter(forecastAdapter);
             }
