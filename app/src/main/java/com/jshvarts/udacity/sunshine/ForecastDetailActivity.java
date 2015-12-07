@@ -8,11 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 public class ForecastDetailActivity extends AppCompatActivity {
-    public static final String EXTRA_DETAIL = "detailData";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_forecast_detail);
     }
 
@@ -20,6 +20,8 @@ public class ForecastDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.forecast_detail, menu);
+
         return true;
     }
 
